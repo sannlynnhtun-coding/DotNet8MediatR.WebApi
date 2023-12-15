@@ -1,7 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DotNet8MediatR.WebApi.Features.Blog;
+namespace DotNet8MediatR.WebApi.Features.Customer.Blog;
 
 [Route("api/[controller]")]
 [ApiController]

@@ -1,5 +1,4 @@
-﻿
-namespace DotNet8MediatR.WebApi.Features.Blog;
+﻿namespace DotNet8MediatR.WebApi.Features.Customer.Blog;
 
 public class BlogBusinessLogic
 {
