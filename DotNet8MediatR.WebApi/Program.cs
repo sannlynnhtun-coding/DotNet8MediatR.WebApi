@@ -1,3 +1,4 @@
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -11,11 +12,13 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
 });
-builder.Services.AddScoped<BlogDataAccess>();
-builder.Services.AddScoped<BlogBusinessLogic>();
-
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UserHandler).Assembly));
+//builder.Services.AddScoped<BlogDataAccess>();
+//builder.Services.AddScoped<BlogBusinessLogic>();
+builder.Services.AddUserModularService();
+builder.Services.AddAtmModularService();
+builder.Services.AddHandlerModularService();
+//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UserHandler).Assembly));
+//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AtmHandler).Assembly));
 
 var app = builder.Build();
 

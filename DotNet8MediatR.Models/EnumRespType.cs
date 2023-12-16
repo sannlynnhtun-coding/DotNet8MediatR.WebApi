@@ -22,7 +22,11 @@ public enum EnumUserModuleType
 
 public enum EnumAtmModuleType
 {
-    
+    None,
+    Login,
+    CardHolder,
+    Deposit,
+    Withdrawal
 }
 
 public enum EnumModuleType

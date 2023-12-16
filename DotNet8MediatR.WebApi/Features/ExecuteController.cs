@@ -1,4 +1,5 @@
-﻿namespace DotNet8MediatR.WebApi.Features;
+﻿
+namespace DotNet8MediatR.WebApi.Features;
 
 [Route("api/[controller]")]
 [ApiController]
@@ -14,9 +15,9 @@ public class ExecuteController : ControllerBase
         {
             var moduleId = Convert.ToInt32(requestModel.ReqService.Split(':')[0]);
             var moduleType = (EnumModuleType)moduleId;
-            var result = moduleType switch
+            object result = moduleType switch
             {
-                EnumModuleType.Atm => null,
+                EnumModuleType.Atm => await AtmModule(requestModel, cancellationToken),
                 EnumModuleType.User => await UserModule(requestModel, cancellationToken),
                 EnumModuleType.None => null,
                 _ => throw new ArgumentOutOfRangeException()
@@ -36,6 +37,16 @@ public class ExecuteController : ControllerBase
         CancellationToken cancellationToken)
     {
         return await _mediator.Send(new UserCommand(new UserApiRequestModel
+        {
+            ReqService = requestModel.GetServiceName(),
+            ReqData = requestModel.ReqData,
+        }), cancellationToken);
+    }
+
+    private async Task<AtmApiResponseModel> AtmModule(ApiRequestModel requestModel,
+        CancellationToken cancellationToken)
+    {
+        return await _mediator.Send(new AtmCommand(new AtmApiRequestModel
         {
             ReqService = requestModel.GetServiceName(),
             ReqData = requestModel.ReqData,

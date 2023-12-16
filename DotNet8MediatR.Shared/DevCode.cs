@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace DotNet8MediatR.Shared;
 
@@ -51,5 +52,10 @@ public static class DevCode
             : JsonConvert.SerializeObject(obj, settings);
         Result:
         return result;
+    }
+
+    public static JObject ToJObject(this object? obj)
+    {
+        return JObject.FromObject(obj);
     }
 }

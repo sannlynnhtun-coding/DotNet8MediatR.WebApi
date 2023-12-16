@@ -8,3 +8,9 @@ global using Microsoft.AspNetCore.Mvc;
 global using Microsoft.EntityFrameworkCore;
 global using Microsoft.AspNetCore.Mvc.Routing;
 global using Microsoft.IdentityModel.Tokens;
+global using DotNet8MediatR.Atm.Features.Atm;
+global using DotNet8MediatR.Atm;
+global using DotNet8MediatR.User;
+global using DotNet8MediatR.WebApi;
+
+
