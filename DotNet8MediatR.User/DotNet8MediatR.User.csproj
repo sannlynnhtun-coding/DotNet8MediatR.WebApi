@@ -1,0 +1,18 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="MediatR" Version="12.2.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\DotNet8MediatR.Db\DotNet8MediatR.Db.csproj" />
+	  <ProjectReference Include="..\DotNet8MediatR.Models\DotNet8MediatR.Models.csproj" />
+	  <ProjectReference Include="..\DotNet8MediatR.Shared\DotNet8MediatR.Shared.csproj" />
+	</ItemGroup>
+</Project>

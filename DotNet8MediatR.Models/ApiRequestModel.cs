@@ -1,8 +1,7 @@
-﻿namespace DotNet8MediatR.Models
+﻿namespace DotNet8MediatR.Models;
+
+public class ApiRequestModel
 {
-    public class ApiRequestModel
-    {
-        public string ReqService { get; set; }
-        public object ReqData { get; set; }
-    }
+    public string ReqService { get; set; }
+    public object ReqData { get; set; }
 }

@@ -1,7 +1,6 @@
-﻿namespace DotNet8MediatR.Models
+﻿namespace DotNet8MediatR.Models;
+
+public class ApiResponseModel
 {
-    public class ApiResponseModel
-    {
-        public ResponseModel Response { get; set; }
-    }
+    public ResponseModel Response { get; set; }
 }

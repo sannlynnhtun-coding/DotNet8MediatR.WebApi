@@ -1,4 +1,4 @@
-﻿namespace DotNet8MediatR.Atm.Features.Customer.Blog;
+﻿namespace DotNet8MediatR.User.Features.User.Blog;
 
 public class BlogBusinessLogic
 {
