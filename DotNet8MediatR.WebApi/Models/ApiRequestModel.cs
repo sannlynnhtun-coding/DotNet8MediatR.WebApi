@@ -1,6 +1,6 @@
-﻿namespace DotNet8MediatR.WebApi.Features.Customer
+﻿namespace DotNet8MediatR.WebApi.Models
 {
-    public class CustomerApiRequestModel
+    public class ApiRequestModel
     {
         public string ReqService { get; set; }
         public object ReqData { get; set; }
