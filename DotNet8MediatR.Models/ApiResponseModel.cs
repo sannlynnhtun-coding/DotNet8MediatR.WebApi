@@ -1,4 +1,4 @@
-﻿namespace DotNet8MediatR.Models.Models
+﻿namespace DotNet8MediatR.Models
 {
     public class ApiResponseModel
     {

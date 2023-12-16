@@ -1,4 +1,4 @@
-﻿namespace DotNet8MediatR.Models.Models;
+﻿namespace DotNet8MediatR.Models;
 
 public enum EnumRespType
 {
@@ -8,4 +8,14 @@ public enum EnumRespType
     Warning,
     Error,
     Confirm
+}
+
+public enum EnumAtmModuleType
+{
+    None,
+    BlogList,
+    BlogEdit,
+    BlogCreate,
+    BlogUpdate,
+    BlogDelete
 }

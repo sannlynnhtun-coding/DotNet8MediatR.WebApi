@@ -1,4 +1,4 @@
-﻿namespace DotNet8MediatR.WebApi.Features.Customer.Blog;
+﻿namespace DotNet8MediatR.Atm.Features.Customer.Blog;
 
 public class BlogBusinessLogic
 {
@@ -9,20 +9,20 @@ public class BlogBusinessLogic
         _blogDataAccess = blogDataAccess;
     }
 
-    public async Task<BlogListResponseModel> GetBlogs(int pageNo, int pageSize)
+    public async Task<BlogListResponseModel> GetBlogs(BlogRequestModel requestModel)
     {
-        BlogListResponseModel model = new BlogListResponseModel();
+        var pageNo = requestModel.PageSettng!.PageNo;
+        var pageSize = requestModel.PageSettng!.PageSize;
+        var model = new BlogListResponseModel();
         if (pageNo == 0)
         {
             model.Response = new ResponseModel("999", "Invalid Page No.", EnumRespType.Warning);
             goto result;
-            //return model;
         }
         if (pageSize == 0)
         {
             model.Response = new ResponseModel("999", "Invalid Page Size.", EnumRespType.Warning);
             goto result;
-            //return model;
         }
         model = await _blogDataAccess.GetBlogs(pageNo, pageSize);
     result:

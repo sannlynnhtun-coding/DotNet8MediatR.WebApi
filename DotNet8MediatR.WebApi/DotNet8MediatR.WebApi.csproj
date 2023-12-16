@@ -4,7 +4,6 @@
     <TargetFramework>net8.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <InvariantGlobalization>true</InvariantGlobalization>
   </PropertyGroup>
 
   <ItemGroup>
@@ -15,7 +14,14 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\DotNet8MediatR.Atm\DotNet8MediatR.Atm.csproj" />
+    <ProjectReference Include="..\DotNet8MediatR.Db\DotNet8MediatR.Db.csproj" />
+    <ProjectReference Include="..\DotNet8MediatR.Models\DotNet8MediatR.Models.csproj" />
   </ItemGroup>
 
 </Project>

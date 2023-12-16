@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace DotNet8MediatR.Models.Models;
+namespace DotNet8MediatR.Models.Blog;
 
 // database to C#
 [Table("Tbl_Blog")]

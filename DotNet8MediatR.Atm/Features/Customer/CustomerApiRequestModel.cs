@@ -1,4 +1,4 @@
-﻿namespace DotNet8MediatR.WebApi.Features.Customer
+﻿namespace DotNet8MediatR.Atm.Features.Customer
 {
     public class CustomerApiRequestModel
     {

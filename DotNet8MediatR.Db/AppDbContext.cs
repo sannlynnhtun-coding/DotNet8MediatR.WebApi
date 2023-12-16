@@ -1,4 +1,7 @@
-﻿namespace DotNet8MediatR.WebApi.Db;
+﻿using DotNet8MediatR.Models.Blog;
+using Microsoft.EntityFrameworkCore;
+
+namespace DotNet8MediatR.Db;
 
 public class AppDbContext : DbContext
 {

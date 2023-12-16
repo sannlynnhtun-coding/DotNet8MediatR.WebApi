@@ -1,9 +1,9 @@
-﻿using DotNet8MediatR.WebApi.Features.Customer;
+﻿using DotNet8MediatR.Atm.Features.Customer;
+using DotNet8MediatR.Models;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DotNet8MediatR.WebApi
+namespace DotNet8MediatR.WebApi.Features
 {
     [Route("api/[controller]")]
     [ApiController]

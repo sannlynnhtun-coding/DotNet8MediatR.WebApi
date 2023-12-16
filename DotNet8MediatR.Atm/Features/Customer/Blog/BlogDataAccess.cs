@@ -1,4 +1,7 @@
-﻿namespace DotNet8MediatR.WebApi.Features.Customer.Blog;
+﻿using DotNet8MediatR.Db;
+using Microsoft.EntityFrameworkCore;
+
+namespace DotNet8MediatR.Atm.Features.Customer.Blog;
 
 public class BlogDataAccess
 {
@@ -11,16 +14,16 @@ public class BlogDataAccess
 
     public async Task<BlogListResponseModel> GetBlogs(int pageNo, int pageSize)
     {
-        BlogListResponseModel model = new BlogListResponseModel();
-        PageSettingModel pageSetting = new PageSettingModel();
+        var model = new BlogListResponseModel();
+        var pageSetting = new PageSettingModel();
         var lst = await _appDbContext.Blogs
             .AsNoTracking()
             .OrderByDescending(x => x.Blog_Id)
             .Skip((pageNo - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
-        int rowCount = await _appDbContext.Blogs.CountAsync();
-        int pageCount = rowCount / pageSize;
+        var rowCount = await _appDbContext.Blogs.CountAsync();
+        var pageCount = rowCount / pageSize;
         if (rowCount % pageSize > 0)
         {
             pageCount++;
@@ -57,8 +60,8 @@ public class BlogDataAccess
 
     public async Task<BlogResponseModel> CreateBlog(BlogRequestModel requestModel)
     {
-        BlogResponseModel model = new BlogResponseModel();
-        BlogDataModel blog = new BlogDataModel
+        var model = new BlogResponseModel();
+        var blog = new BlogDataModel
         {
             Blog_Title = requestModel.Title!,
             Blog_Author = requestModel.Author!,
@@ -68,9 +71,9 @@ public class BlogDataAccess
         await _appDbContext.Blogs.AddAsync(blog);
         var result = await _appDbContext.SaveChangesAsync();
 
-        string respCode = result > 0 ? "000" : "999";
-        string respDesp = result > 0 ? "Saving Successful." : "Saving Failed.";
-        EnumRespType respType = result > 0 ? EnumRespType.Success : EnumRespType.Error;
+        var respCode = result > 0 ? "000" : "999";
+        var respDesp = result > 0 ? "Saving Successful." : "Saving Failed.";
+        var respType = result > 0 ? EnumRespType.Success : EnumRespType.Error;
         model.Response = new ResponseModel(respCode, respDesp, respType);
         return model;
     }
