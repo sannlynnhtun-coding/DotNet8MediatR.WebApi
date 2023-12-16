@@ -3,7 +3,7 @@ using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DotNet8MediatR.WebApi.Features
+namespace DotNet8MediatR.WebApi
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -13,7 +13,7 @@ namespace DotNet8MediatR.WebApi.Features
         public ExecuteController(IMediator mediator) => _mediator = mediator;
 
         [HttpPost]
-        public async Task<IActionResult> Execute(ApiRequestModel requestModel)
+        public async Task<IActionResult> Execute(ApiRequestModel requestModel, CancellationToken cancellationToken)
         {
             try
             {
@@ -21,7 +21,7 @@ namespace DotNet8MediatR.WebApi.Features
                 {
                     ReqData = requestModel.ReqData,
                     ReqService = requestModel.ReqService,
-                })));
+                }), cancellationToken));
             }
             catch (Exception ex)
             {

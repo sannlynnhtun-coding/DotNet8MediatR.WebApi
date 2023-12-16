@@ -6,7 +6,7 @@ namespace DotNet8MediatR.WebApi.Features.Customer
     {
         public async Task<CustomerApiResponseModel> Handle(CustomerCommand request, CancellationToken cancellationToken)
         {
-            throw new NotImplementedException();
+            
         }
     }
 }
