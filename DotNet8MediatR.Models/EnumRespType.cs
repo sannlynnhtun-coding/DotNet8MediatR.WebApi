@@ -10,7 +10,7 @@ public enum EnumRespType
     Confirm
 }
 
-public enum EnumAtmModuleType
+public enum EnumUserModuleType
 {
     None,
     BlogList,
@@ -18,4 +18,16 @@ public enum EnumAtmModuleType
     BlogCreate,
     BlogUpdate,
     BlogDelete
+}
+
+public enum EnumAtmModuleType
+{
+    
+}
+
+public enum EnumModuleType
+{
+    None,
+    User,
+    Atm
 }

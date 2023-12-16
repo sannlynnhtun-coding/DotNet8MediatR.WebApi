@@ -12,11 +12,16 @@ public class ExecuteController : ControllerBase
     {
         try
         {
-            return Ok(await _mediator.Send(new UserCommand(new UserApiRequestModel
+            var moduleId = Convert.ToInt32(requestModel.ReqService.Split(':')[0]);
+            var moduleType = (EnumModuleType)moduleId;
+            var result = moduleType switch
             {
-                ReqData = requestModel.ReqData,
-                ReqService = requestModel.ReqService,
-            }), cancellationToken));
+                EnumModuleType.Atm => null,
+                EnumModuleType.User => await UserModule(requestModel, cancellationToken),
+                EnumModuleType.None => null,
+                _ => throw new ArgumentOutOfRangeException()
+            };
+            return Ok(result);
         }
         catch (Exception ex)
         {
@@ -25,5 +30,15 @@ public class ExecuteController : ControllerBase
                 Response = new ResponseModel("999", ex.ToString(), EnumRespType.Error)
             });
         }
+    }
+
+    private async Task<UserApiResponseModel> UserModule(ApiRequestModel requestModel,
+        CancellationToken cancellationToken)
+    {
+        return await _mediator.Send(new UserCommand(new UserApiRequestModel
+        {
+            ReqService = requestModel.GetServiceName(),
+            ReqData = requestModel.ReqData,
+        }), cancellationToken);
     }
 }
