@@ -15,11 +15,21 @@ namespace DotNet8MediatR.WebApi.Features
         [HttpPost]
         public async Task<IActionResult> Execute(ApiRequestModel requestModel)
         {
-            return Ok(await _mediator.Send(new CustomerCommand(new CustomerApiRequestModel
+            try
             {
-                ReqData = requestModel.ReqData,
-                ReqService = requestModel.ReqService,
-            })));
+                return Ok(await _mediator.Send(new CustomerCommand(new CustomerApiRequestModel
+                {
+                    ReqData = requestModel.ReqData,
+                    ReqService = requestModel.ReqService,
+                })));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new ApiResponseModel
+                {
+                    Response = new ResponseModel("999", ex.ToString(), EnumRespType.Error)
+                });
+            }
         }
     }
 }

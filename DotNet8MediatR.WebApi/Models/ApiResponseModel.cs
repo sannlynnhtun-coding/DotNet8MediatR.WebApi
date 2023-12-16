@@ -2,5 +2,6 @@
 {
     public class ApiResponseModel
     {
+        public ResponseModel Response { get; set; }
     }
 }
