@@ -36,7 +36,7 @@ public class ExecuteController : ControllerBase
                 ValidToken(moduleType, requestModel.Token);
             }
 
-            object result = moduleType switch
+            object? result = moduleType switch
             {
                 EnumModuleType.Atm => await AtmModule(requestModel, cancellationToken),
                 EnumModuleType.User => await UserModule(requestModel, cancellationToken),
