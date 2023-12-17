@@ -49,7 +49,7 @@ public static class AuthenticateList
         return _authenticateRoles;
     }
 
-    public static bool IsAllow(EnumModuleType moduleType,string role)
+    public static bool IsAllow(this EnumModuleType moduleType,string role)
     {
         var result = Get()
             .FirstOrDefault(x => x.moduleType== moduleType && x.userType.Contains(role));

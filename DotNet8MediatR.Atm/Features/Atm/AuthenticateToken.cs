@@ -68,9 +68,11 @@ namespace DotNet8MediatR.Atm.Features.Atm
         //    };
         //}
 
-        //protected AuthenticateTokenResponseModel? GetToken()
-        //{
-        //    return GenerateToken(GetClaims());
-        //}
+        protected AuthenticateTokenResponseModel? GetToken
+            (AuthenticateTokenRequestModel requestModel)
+        {
+            //return GenerateToken(GetClaims());
+            return GenerateToken(requestModel);
+        }
     }
 }
