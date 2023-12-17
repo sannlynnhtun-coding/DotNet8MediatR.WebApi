@@ -25,16 +25,16 @@ public class ExecuteController : ControllerBase
     //     => _mediator = mediator; 
 
     [HttpPost]
-    public async Task<IActionResult> Execute(ApiRequestModel requestModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> ExecuteV1(ApiRequestModel requestModel, CancellationToken cancellationToken)
     {
         try
         {
+
             var moduleId = Convert.ToInt32(requestModel.ReqService.Split(':')[0]);
             var moduleType = (EnumModuleType)moduleId;
-            if (requestModel.ReqService.Split(':')[1] != "Login")
-            {
-                ValidToken(moduleType, requestModel.Token);
-            }
+            var valid = ValidToken(requestModel, moduleType, requestModel.Token);
+            if (valid is not null) 
+                return Ok(valid);
 
             object? result = moduleType switch
             {
@@ -67,7 +67,6 @@ public class ExecuteController : ControllerBase
         model.Token = token is not null ? _authenticateToken.GenerateToken(token)?.AccessToken : null;
         return model;
     }
-
     private async Task<AtmApiResponseModel> AtmModule(ApiRequestModel requestModel,
         CancellationToken cancellationToken)
     {
@@ -99,17 +98,23 @@ public class ExecuteController : ControllerBase
         }), cancellationToken);
     }
 
-    private void ValidToken(EnumModuleType moduleType, string? token)
+    private ApiResponseModel? ValidToken(ApiRequestModel requestModel, EnumModuleType moduleType, string? token)
     {
-        var handler = new JwtSecurityTokenHandler();
-        _decodedToken = handler.ReadJwtToken(token ??
-            throw new Exception("Token is required."));
-        var item = _decodedToken?.Claims?
-            .FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ??
-            throw new Exception("Token doesn't exit.");
-        var isAllow = moduleType.IsAllow(item);
-        if (!isAllow)
-            throw new Exception("Request is not allowed.");
+        if (requestModel.ReqService.Split(':')[1] != "Login")
+        {
+            var handler = new JwtSecurityTokenHandler();
+            if (token is null)
+                return TokenError("Token is required");
+            _decodedToken = handler.ReadJwtToken(token);
+            var item = _decodedToken?.Claims?
+                .FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ?? null;
+            if(item is null) 
+                return TokenError("Role doesn't exit.");
+            var isAllow = moduleType.IsAllow(item);
+            if (!isAllow)
+                return TokenError("Request is not allowed.");
+        }
+        return default;
     }
 
     private AuthenticateTokenRequestModel? GetAuthenticateModel(ApiRequestModel requestModel)
@@ -131,5 +136,14 @@ public class ExecuteController : ControllerBase
             return model;
         }
         return default;
+    }
+
+    private ApiResponseModel TokenError(string error)
+    {
+
+        return new ApiResponseModel
+        {
+            Response = new ResponseModel("999", error, EnumRespType.Error)
+        };
     }
 }
