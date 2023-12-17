@@ -16,7 +16,7 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 //builder.Services.AddScoped<BlogBusinessLogic>();
 builder.Services.AddUserModularService();
 builder.Services.AddAtmModularService();
-builder.Services.AddHandlerModularService();
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
 //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UserHandler).Assembly));
 //builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AtmHandler).Assembly));
 

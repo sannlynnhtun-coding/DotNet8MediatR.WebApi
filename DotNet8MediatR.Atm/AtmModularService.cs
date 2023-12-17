@@ -1,4 +1,6 @@
 ﻿
+using DotNet8MediatR.Atm.Features.Atm;
+
 namespace DotNet8MediatR.Atm
 {
     public static class AtmModularService
@@ -7,7 +9,8 @@ namespace DotNet8MediatR.Atm
         {
             services.AddAtmBusinessLogic();
             services.AddAtmDataAccess();
-            //services.AddAtmHandler();
+            services.AddAtmHandler();
+            services.AddScoped<AuthenticateToken>();
             return services;
         }
 
@@ -23,10 +26,10 @@ namespace DotNet8MediatR.Atm
             return services;
         }
 
-        //public static IServiceCollection AddAtmHandler(this IServiceCollection services)
-        //{
-        //    services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AtmHandler).Assembly));
-        //    return services;
-        //}
+        public static IServiceCollection AddAtmHandler(this IServiceCollection services)
+        {
+            services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AtmHandler).Assembly));
+            return services;
+        }
     }
 }
