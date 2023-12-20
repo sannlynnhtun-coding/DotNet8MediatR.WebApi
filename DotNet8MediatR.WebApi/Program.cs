@@ -12,13 +12,11 @@ builder.Services.AddDbContext<AppDbContext>(opt =>
 {
     opt.UseSqlServer(builder.Configuration.GetConnectionString("DbConnection"));
 });
-//builder.Services.AddScoped<BlogDataAccess>();
-//builder.Services.AddScoped<BlogBusinessLogic>();
+
+builder.Services.AddMediatRService();
+
 builder.Services.AddUserModularService();
 builder.Services.AddAtmModularService();
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(Program).Assembly));
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(UserHandler).Assembly));
-//builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssembly(typeof(AtmHandler).Assembly));
 
 var app = builder.Build();
 

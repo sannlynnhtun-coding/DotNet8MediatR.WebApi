@@ -11,27 +11,21 @@ namespace DotNet8MediatR.WebApi.Features;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ExecuteController : ControllerBase
+public class ExecuteController(IMediator mediator, AuthenticateToken authenticateToken) : ControllerBase
 {
-    private readonly IMediator _mediator;
-    private readonly AuthenticateToken _authenticateToken;
+    private readonly IMediator _mediator = mediator;
+    private readonly AuthenticateToken _authenticateToken = authenticateToken;
     private JwtSecurityToken DecodedToken { get; set; }
 
-    public ExecuteController(IMediator mediator, AuthenticateToken authenticateToken)
-    {
-        _mediator = mediator;
-        _authenticateToken = authenticateToken;
-    }
-
     [HttpPost]
-    public async Task<IActionResult> ExecuteV1(ApiRequestModel requestModel, CancellationToken cancellationToken)
+    public async Task<IActionResult> Execute(ApiRequestModel requestModel, CancellationToken cancellationToken)
     {
         try
         {
             var moduleId = Convert.ToInt32(requestModel.ReqService.Split(':')[0]);
             var moduleType = (EnumModuleType)moduleId;
             var valid = ValidToken(requestModel, moduleType, requestModel.Token);
-            if (valid is not null)
+            if (valid!.Response.IsError)
                 return Ok(valid);
 
             object? result = moduleType switch
@@ -77,26 +71,6 @@ public class ExecuteController : ControllerBase
         return model;
     }
 
-    private async Task<UserApiResponseModel> UserModuleV1(ApiRequestModel requestModel,
-       CancellationToken cancellationToken)
-    {
-        return await _mediator.Send(new UserCommand(new UserApiRequestModel
-        {
-            ReqService = requestModel.GetServiceName(),
-            ReqData = requestModel.ReqData,
-        }), cancellationToken);
-    }
-
-    private async Task<AtmApiResponseModel> AtmModuleV1(ApiRequestModel requestModel,
-        CancellationToken cancellationToken)
-    {
-        return await _mediator.Send(new AtmCommand(new AtmApiRequestModel
-        {
-            ReqService = requestModel.GetServiceName(),
-            ReqData = requestModel.ReqData,
-        }), cancellationToken);
-    }
-
     private ApiResponseModel? ValidToken(ApiRequestModel requestModel, EnumModuleType moduleType, string? token)
     {
         if (requestModel.ReqService.Split(':')[1] != "Login")
@@ -104,16 +78,18 @@ public class ExecuteController : ControllerBase
             var handler = new JwtSecurityTokenHandler();
             if (token is null)
                 return TokenError("Token is required.");
+
             DecodedToken = handler.ReadJwtToken(token);
             var item = DecodedToken?.Claims?
                 .FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ?? null;
             if (item is null)
                 return TokenError("Role doesn't exist.");
+
             var isAllow = moduleType.IsAllow(item);
             if (!isAllow)
                 return TokenError("Request is not allowed.");
         }
-        return default;
+        return new ApiResponseModel { Response = new ResponseModel { RespType = EnumRespType.Success } };
     }
 
     private AuthenticateTokenRequestModel? GetAuthenticateModel(ApiRequestModel requestModel)
