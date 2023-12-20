@@ -1,9 +1,11 @@
 ﻿
 using DotNet8MediatR.Atm.Features.Atm;
 using DotNet8MediatR.Models.Authenticate;
+using DotNet8MediatR.Shared;
 using Newtonsoft.Json.Linq;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace DotNet8MediatR.WebApi.Features;
 
@@ -13,7 +15,7 @@ public class ExecuteController : ControllerBase
 {
     private readonly IMediator _mediator;
     private readonly AuthenticateToken _authenticateToken;
-    private JwtSecurityToken _decodedToken { get; set; }
+    private JwtSecurityToken DecodedToken { get; set; }
 
     public ExecuteController(IMediator mediator, AuthenticateToken authenticateToken)
     {
@@ -21,19 +23,15 @@ public class ExecuteController : ControllerBase
         _authenticateToken = authenticateToken;
     }
 
-    // public ExecuteController(IMediator mediator)
-    //     => _mediator = mediator; 
-
     [HttpPost]
     public async Task<IActionResult> ExecuteV1(ApiRequestModel requestModel, CancellationToken cancellationToken)
     {
         try
         {
-
             var moduleId = Convert.ToInt32(requestModel.ReqService.Split(':')[0]);
             var moduleType = (EnumModuleType)moduleId;
             var valid = ValidToken(requestModel, moduleType, requestModel.Token);
-            if (valid is not null) 
+            if (valid is not null)
                 return Ok(valid);
 
             object? result = moduleType switch
@@ -43,7 +41,10 @@ public class ExecuteController : ControllerBase
                 EnumModuleType.None => null,
                 _ => throw new ArgumentOutOfRangeException()
             };
-            return Ok(result);
+            var token = GetAuthenticateModel(requestModel);
+            JObject jObj = result.ToJObject();
+            jObj.TryAdd("Token", token is not null ? _authenticateToken.GenerateToken(token)?.AccessToken : null);
+            return Content(jObj.ToJson()!, Application.Json);
         }
         catch (Exception ex)
         {
@@ -54,31 +55,28 @@ public class ExecuteController : ControllerBase
         }
     }
 
-
     private async Task<UserApiResponseModel> UserModule(ApiRequestModel requestModel,
         CancellationToken cancellationToken)
     {
-        var token = GetAuthenticateModel(requestModel);
         var model = await _mediator.Send(new UserCommand(new UserApiRequestModel
         {
             ReqService = requestModel.GetServiceName(),
             ReqData = requestModel.ReqData,
         }), cancellationToken);
-        model.Token = token is not null ? _authenticateToken.GenerateToken(token)?.AccessToken : null;
         return model;
     }
+
     private async Task<AtmApiResponseModel> AtmModule(ApiRequestModel requestModel,
         CancellationToken cancellationToken)
     {
-        var token = GetAuthenticateModel(requestModel);
         var model = await _mediator.Send(new AtmCommand(new AtmApiRequestModel
         {
             ReqService = requestModel.GetServiceName(),
             ReqData = requestModel.ReqData,
         }), cancellationToken);
-        model.Token = token is not null ? _authenticateToken.GenerateToken(token)?.AccessToken : null;
         return model;
     }
+
     private async Task<UserApiResponseModel> UserModuleV1(ApiRequestModel requestModel,
        CancellationToken cancellationToken)
     {
@@ -88,6 +86,7 @@ public class ExecuteController : ControllerBase
             ReqData = requestModel.ReqData,
         }), cancellationToken);
     }
+
     private async Task<AtmApiResponseModel> AtmModuleV1(ApiRequestModel requestModel,
         CancellationToken cancellationToken)
     {
@@ -104,12 +103,12 @@ public class ExecuteController : ControllerBase
         {
             var handler = new JwtSecurityTokenHandler();
             if (token is null)
-                return TokenError("Token is required");
-            _decodedToken = handler.ReadJwtToken(token);
-            var item = _decodedToken?.Claims?
+                return TokenError("Token is required.");
+            DecodedToken = handler.ReadJwtToken(token);
+            var item = DecodedToken?.Claims?
                 .FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ?? null;
-            if(item is null) 
-                return TokenError("Role doesn't exit.");
+            if (item is null)
+                return TokenError("Role doesn't exist.");
             var isAllow = moduleType.IsAllow(item);
             if (!isAllow)
                 return TokenError("Request is not allowed.");
@@ -123,13 +122,13 @@ public class ExecuteController : ControllerBase
         {
             var model = new AuthenticateTokenRequestModel
             {
-                CardNumber = _decodedToken?.Claims?
+                CardNumber = DecodedToken?.Claims?
                             .FirstOrDefault(x => x.Type == "CardNumber")?.Value ??
                             throw new Exception("CardNumber is required."),
-                UserName = _decodedToken?.Claims?
+                UserName = DecodedToken?.Claims?
                             .FirstOrDefault(x => x.Type == "UserName")?.Value ??
                             throw new Exception("UserName is required."),
-                UserRoles = [_decodedToken?.Claims?
+                UserRoles = [DecodedToken?.Claims?
                             .FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value ??
                             throw new Exception("UserRoles is required.")],
             };

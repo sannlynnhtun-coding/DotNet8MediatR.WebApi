@@ -22,6 +22,7 @@
     <ProjectReference Include="..\DotNet8MediatR.Atm\DotNet8MediatR.Atm.csproj" />
     <ProjectReference Include="..\DotNet8MediatR.Db\DotNet8MediatR.Db.csproj" />
     <ProjectReference Include="..\DotNet8MediatR.Models\DotNet8MediatR.Models.csproj" />
+    <ProjectReference Include="..\DotNet8MediatR.Shared\DotNet8MediatR.Shared.csproj" />
     <ProjectReference Include="..\DotNet8MediatR.User\DotNet8MediatR.User.csproj" />
   </ItemGroup>
 

@@ -33,7 +33,7 @@ namespace DotNet8MediatR.Atm.Features.Atm.Login
                 model.Response.Set(Codes.Warning0002);
                 goto result;
             }
-            model = await _loginDataAccess.Login(requestModel.CardNumber, requestModel.Password);
+            model = await _loginDataAccess.Login(requestModel.CardNumber!, requestModel.Password!);
             var authenticateTokenResponseModel = _authenticateToken
                 .GenerateToken(new AuthenticateTokenRequestModel
             {
@@ -41,7 +41,7 @@ namespace DotNet8MediatR.Atm.Features.Atm.Login
                 UserName = model.UserName,
                 UserRoles = model.UserRoles
             });
-            model.AccessToken = authenticateTokenResponseModel.AccessToken;
+            model.AccessToken = authenticateTokenResponseModel!.AccessToken!;
         result:
             return model;
         }
