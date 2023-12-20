@@ -26,9 +26,11 @@ namespace DotNet8MediatR.Atm.Features.Atm
             if (requestModel is null) return null;
 
             AuthenticateTokenResponseModel model = new AuthenticateTokenResponseModel();
-            var claims = new List<Claim>();
-            claims.Add(new Claim("UserName", requestModel.UserName));
-            claims.Add(new Claim("CardNumber", requestModel.CardNumber));
+            var claims = new List<Claim>
+            {
+                new Claim("UserName", requestModel.UserName),
+                new Claim("CardNumber", requestModel.CardNumber)
+            };
 
             // Add roles as multiple claims
             foreach (var role in requestModel.UserRoles)
@@ -39,9 +41,9 @@ namespace DotNet8MediatR.Atm.Features.Atm
             JwtRequestModel jwtRequestModel = new JwtRequestModel
             (
                 requestModel.UserName,
-                _configuration["Jwt:Secret"],
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Audience"],
+                _configuration["Jwt:Secret"]!,
+                _configuration["Jwt:Issuer"]!,
+                _configuration["Jwt:Audience"]!,
                 TimeSpan.FromMinutes(10),
                 claims.ToArray()
             );
