@@ -1,7 +1,7 @@
 # DotNet8MediatR.WebApi
 
 Please remove this line `<InvariantGlobalization>true</InvariantGlobalization>` in web api project
-```
+```sh
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -12,13 +12,13 @@ Please remove this line `<InvariantGlobalization>true</InvariantGlobalization>` 
 ```
 
 Example Request
-```
+```json
 {
-	"reqService": "2:Login",
-	"reqData": {
-		"CardNumber": "4532772818527395",
-		"Password": "1234"
-	}
+    "reqService": "2:Login",
+    "reqData": {
+	"CardNumber": "4532772818527395",
+	"Password": "1234"
+    }
 }
 
 {
