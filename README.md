@@ -1,7 +1,7 @@
 # DotNet8MediatR.WebApi
 
 Please remove this line `<InvariantGlobalization>true</InvariantGlobalization>` in web api project
-```sh
+```xml
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
