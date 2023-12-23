@@ -4,12 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNet8MediatR.Db;
 
-public class AppDbContext : DbContext
+public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(options)
 {
-    public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
-    {
-    }
-
     public DbSet<BlogDataModel> Blogs { get; set; }
     public  DbSet<AtmCartDataModel> TblAtmCards { get; set; }
 }

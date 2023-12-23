@@ -10,15 +10,8 @@ using System.Threading.Tasks;
 
 namespace DotNet8MediatR.Atm.Features.Atm
 {
-    public class AtmHandler : IRequestHandler<AtmCommand, AtmApiResponseModel>
+    public class AtmHandler(IServiceProvider serviceProvider) : IRequestHandler<AtmCommand, AtmApiResponseModel>
     {
-        private readonly IServiceProvider _serviceProvider;
-
-        public AtmHandler(IServiceProvider serviceProvider)
-        {
-            _serviceProvider = serviceProvider;
-        }
-
         public async Task<AtmApiResponseModel> Handle(AtmCommand request,
             CancellationToken cancellationToken)
         {
@@ -29,7 +22,7 @@ namespace DotNet8MediatR.Atm.Features.Atm
             switch (reqService)
             {
                 case EnumAtmModuleType.Login:
-                    var login = _serviceProvider.GetRequiredService<LoginBusinessLogic>();
+                    var login = serviceProvider.GetRequiredService<LoginBusinessLogic>();
                     responseData = await login.Login(raw.ToObject<LoginRequestModel>()!);
                     break;
                 case EnumAtmModuleType.CardHolder:

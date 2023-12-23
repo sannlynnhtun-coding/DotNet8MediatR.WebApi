@@ -9,7 +9,7 @@ public static class AtmModularService
         services.AddAtmBusinessLogic();
         services.AddAtmDataAccess();
         services.AddAtmHandler();
-        services.AddScoped<AuthenticateToken>();
+        services.AddScoped<AuthenticateTokenService>();
         return services;
     }
 

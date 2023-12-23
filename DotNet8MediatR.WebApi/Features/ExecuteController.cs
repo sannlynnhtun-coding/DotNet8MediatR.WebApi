@@ -11,10 +11,10 @@ namespace DotNet8MediatR.WebApi.Features;
 
 [Route("api/[controller]")]
 [ApiController]
-public class ExecuteController(IMediator mediator, AuthenticateToken authenticateToken) : ControllerBase
+public class ExecuteController(IMediator mediator, AuthenticateTokenService authenticateTokenService) : ControllerBase
 {
     private readonly IMediator _mediator = mediator;
-    private readonly AuthenticateToken _authenticateToken = authenticateToken;
+    private readonly AuthenticateTokenService _authenticateTokenService = authenticateTokenService;
     private JwtSecurityToken DecodedToken { get; set; }
 
     [HttpPost]
@@ -37,7 +37,7 @@ public class ExecuteController(IMediator mediator, AuthenticateToken authenticat
             };
             var token = GetAuthenticateModel(requestModel);
             JObject jObj = result.ToJObject();
-            jObj.TryAdd("Token", token is not null ? _authenticateToken.GenerateToken(token)?.AccessToken : null);
+            jObj.TryAdd("Token", token is not null ? _authenticateTokenService.GenerateToken(token)?.AccessToken : null);
             return Content(jObj.ToJson()!, Application.Json);
         }
         catch (Exception ex)

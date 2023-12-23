@@ -9,18 +9,12 @@ using System.Threading.Tasks;
 
 namespace DotNet8MediatR.Atm.Features.Atm.Login
 {
-    public class LoginDataAccess
+    public class LoginDataAccess(AppDbContext appDbContext)
     {
-        private readonly AppDbContext _appDbContext;
-
-        public LoginDataAccess(AppDbContext appDbContext)
-        {
-            _appDbContext = appDbContext;
-        }
         public async Task<LoginResponseModel> Login(string cardNumber, string password)
         {
             LoginResponseModel model = new();
-            var item = await _appDbContext.TblAtmCards
+            var item = await appDbContext.TblAtmCards
                 .FirstOrDefaultAsync(x =>
                     x.CardNumber == cardNumber &&
                     x.Password == password);

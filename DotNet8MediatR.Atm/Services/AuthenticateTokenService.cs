@@ -12,14 +12,8 @@ using Microsoft.Extensions.Configuration;
 
 namespace DotNet8MediatR.Atm.Features.Atm
 {
-    public class AuthenticateToken
+    public class AuthenticateTokenService(IConfiguration configuration)
     {
-        private readonly IConfiguration _configuration;
-        public AuthenticateToken(IConfiguration configuration)
-        {
-            _configuration = configuration;
-        }
-
         public AuthenticateTokenResponseModel? GenerateToken
             (AuthenticateTokenRequestModel? requestModel)
         {
@@ -41,9 +35,9 @@ namespace DotNet8MediatR.Atm.Features.Atm
             JwtRequestModel jwtRequestModel = new JwtRequestModel
             (
                 requestModel.UserName,
-                _configuration["Jwt:Secret"]!,
-                _configuration["Jwt:Issuer"]!,
-                _configuration["Jwt:Audience"]!,
+                configuration["Jwt:Secret"]!,
+                configuration["Jwt:Issuer"]!,
+                configuration["Jwt:Audience"]!,
                 TimeSpan.FromMinutes(10),
                 claims.ToArray()
             );

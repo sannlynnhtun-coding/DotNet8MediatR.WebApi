@@ -1,14 +1,7 @@
 ﻿namespace DotNet8MediatR.User.Features.User.Blog;
 
-public class BlogBusinessLogic
+public class BlogBusinessLogic(BlogDataAccess blogDataAccess)
 {
-    private readonly BlogDataAccess _blogDataAccess;
-
-    public BlogBusinessLogic(BlogDataAccess blogDataAccess)
-    {
-        _blogDataAccess = blogDataAccess;
-    }
-
     public async Task<BlogListResponseModel> GetBlogs(BlogRequestModel requestModel)
     {
         var pageNo = requestModel.PageSettng!.PageNo;
@@ -24,13 +17,13 @@ public class BlogBusinessLogic
             model.Response = new ResponseModel("999", "Invalid Page Size.", EnumRespType.Warning);
             goto result;
         }
-        model = await _blogDataAccess.GetBlogs(pageNo, pageSize);
+        model = await blogDataAccess.GetBlogs(pageNo, pageSize);
     result:
         return model;
     }
 
     public async Task<BlogResponseModel> CreateBlog(BlogRequestModel requestModel)
     {
-        return await _blogDataAccess.CreateBlog(requestModel);
+        return await blogDataAccess.CreateBlog(requestModel);
     }
 }

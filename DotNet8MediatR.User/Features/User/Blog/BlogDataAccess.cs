@@ -3,26 +3,19 @@ using Microsoft.EntityFrameworkCore;
 
 namespace DotNet8MediatR.User.Features.User.Blog;
 
-public class BlogDataAccess
+public class BlogDataAccess(AppDbContext appDbContext)
 {
-    private readonly AppDbContext _appDbContext;
-
-    public BlogDataAccess(AppDbContext appDbContext)
-    {
-        _appDbContext = appDbContext;
-    }
-
     public async Task<BlogListResponseModel> GetBlogs(int pageNo, int pageSize)
     {
         var model = new BlogListResponseModel();
         var pageSetting = new PageSettingModel();
-        var lst = await _appDbContext.Blogs
+        var lst = await appDbContext.Blogs
             .AsNoTracking()
             .OrderByDescending(x => x.Blog_Id)
             .Skip((pageNo - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync();
-        var rowCount = await _appDbContext.Blogs.CountAsync();
+        var rowCount = await appDbContext.Blogs.CountAsync();
         var pageCount = rowCount / pageSize;
         if (rowCount % pageSize > 0)
         {
@@ -68,8 +61,8 @@ public class BlogDataAccess
             Blog_Content = requestModel.Content!,
         };
 
-        await _appDbContext.Blogs.AddAsync(blog);
-        var result = await _appDbContext.SaveChangesAsync();
+        await appDbContext.Blogs.AddAsync(blog);
+        var result = await appDbContext.SaveChangesAsync();
 
         var respCode = result > 0 ? "000" : "999";
         var respDesp = result > 0 ? "Saving Successful." : "Saving Failed.";

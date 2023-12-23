@@ -4,15 +4,8 @@ using MediatR;
 
 namespace DotNet8MediatR.User.Features.User;
 
-public class UserHandler : IRequestHandler<UserCommand, UserApiResponseModel>
+public class UserHandler(BlogBusinessLogic blogBusinessLogic) : IRequestHandler<UserCommand, UserApiResponseModel>
 {
-    private readonly BlogBusinessLogic _blogBusinessLogic;
-
-    public UserHandler(BlogBusinessLogic blogBusinessLogic)
-    {
-        _blogBusinessLogic = blogBusinessLogic;
-    }
-
     public async Task<UserApiResponseModel> Handle(UserCommand request, CancellationToken cancellationToken)
     {
         var model = new UserApiResponseModel();
@@ -22,12 +15,12 @@ public class UserHandler : IRequestHandler<UserCommand, UserApiResponseModel>
         switch (reqService)
         {
             case EnumUserModuleType.BlogList:
-                responseData = await _blogBusinessLogic.GetBlogs(raw.ToObject<BlogRequestModel>()!);
+                responseData = await blogBusinessLogic.GetBlogs(raw.ToObject<BlogRequestModel>()!);
                 break;
             case EnumUserModuleType.BlogEdit:
                 break;
             case EnumUserModuleType.BlogCreate:
-                responseData = await _blogBusinessLogic.CreateBlog(raw.ToObject<BlogRequestModel>()!);
+                responseData = await blogBusinessLogic.CreateBlog(raw.ToObject<BlogRequestModel>()!);
                 break;
             case EnumUserModuleType.BlogUpdate:
                 break;

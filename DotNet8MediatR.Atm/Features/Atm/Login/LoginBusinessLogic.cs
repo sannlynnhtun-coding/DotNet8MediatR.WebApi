@@ -9,17 +9,10 @@ using System.Threading.Tasks;
 
 namespace DotNet8MediatR.Atm.Features.Atm.Login
 {
-    public class LoginBusinessLogic
+    public class LoginBusinessLogic(
+        LoginDataAccess loginDataAccess,
+        AuthenticateTokenService authenticateTokenService)
     {
-        private readonly LoginDataAccess _loginDataAccess;
-        private readonly AuthenticateToken _authenticateToken;
-        public LoginBusinessLogic(LoginDataAccess loginDataAccess, 
-            AuthenticateToken authenticateToken)
-        {
-            _loginDataAccess = loginDataAccess;
-            _authenticateToken = authenticateToken;
-        }
-
         public async Task<LoginResponseModel> Login(LoginRequestModel requestModel)
         {
             LoginResponseModel model = new();
@@ -33,8 +26,8 @@ namespace DotNet8MediatR.Atm.Features.Atm.Login
                 model.Response.Set(Codes.Warning0002);
                 goto result;
             }
-            model = await _loginDataAccess.Login(requestModel.CardNumber!, requestModel.Password!);
-            var authenticateTokenResponseModel = _authenticateToken
+            model = await loginDataAccess.Login(requestModel.CardNumber!, requestModel.Password!);
+            var authenticateTokenResponseModel = authenticateTokenService
                 .GenerateToken(new AuthenticateTokenRequestModel
             {
                 CardNumber = model.CardNumber,
