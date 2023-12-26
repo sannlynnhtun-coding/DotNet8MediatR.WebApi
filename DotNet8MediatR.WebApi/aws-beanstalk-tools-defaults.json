@@ -1,0 +1,20 @@
+
+{
+    "region" : "ap-southeast-1",
+    "configuration" : "Debug",
+    "framework"     : "net8.0",
+    "self-contained" : false,
+    "application"    : "DotNet8MediatRWebApi",
+    "environment"    : "DotNet8MediatRWebApi-test",
+    "enable-xray"    : false,
+    "enhanced-health-type" : "basic",
+    "additional-options"   : "\"aws:autoscaling:launchconfiguration,SecurityGroups\"=\"sg-0db50452bfd24b3c6\";\"aws:ec2:vpc,Subnets\"=\"subnet-04b43bfb68c6281c2\"",
+    "solution-stack"       : "64bit Amazon Linux 2 v2.6.3 running .NET Core",
+    "environment-type"     : "SingleInstance",
+    "cname"                : "dotnet8mediatrwebapi-test",
+    "instance-type"        : "t2.micro",
+    "key-pair"             : "",
+    "instance-profile"     : "aws-elasticbeanstalk-ec2-role",
+    "service-role"         : "aws-elasticbeanstalk-service-role",
+    "proxy-server"         : "nginx"
+}
