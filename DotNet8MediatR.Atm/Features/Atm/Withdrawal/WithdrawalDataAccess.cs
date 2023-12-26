@@ -15,12 +15,12 @@ public class WithdrawalDataAccess(AppDbContext appDbContext)
         model.RecentBalance = item.Balance;
         model.NewBalance = item.Balance - requestModel.Amount;
         model.Amount = requestModel.Amount;
-        model.Response.Set(Codes.Success0003);
 
-        item.Balance = item.Balance - requestModel.Amount;
+        item.Balance -= requestModel.Amount;
         appDbContext.Update(item);
         await appDbContext.SaveChangesAsync();
 
+        model.Response.Set(Codes.Success0003);
     result:
         return model;
     }

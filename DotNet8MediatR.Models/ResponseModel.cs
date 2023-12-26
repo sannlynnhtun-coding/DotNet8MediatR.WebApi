@@ -57,6 +57,10 @@ public class Codes
     /// </summary>
     public static string Warning0003 { get; } = "MW#0003";
 
+    /// <summary>
+    /// User Name or Password is wrong.
+    /// </summary>
+    public static string Warning0004 { get; } = "MW#0004";
 }
 
 public static class ResponseModelExtension

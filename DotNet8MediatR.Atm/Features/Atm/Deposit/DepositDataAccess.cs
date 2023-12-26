@@ -16,7 +16,7 @@ public class DepositDataAccess(AppDbContext appDbContext)
         model.Amount = requestModel.Amount;
         model.Response.Set(Codes.Success0004);
 
-        item.Balance = item.Balance + requestModel.Amount;
+        item.Balance += requestModel.Amount;
         appDbContext.Update(item);
         await appDbContext.SaveChangesAsync();
 
