@@ -1,4 +1,4 @@
-﻿using DotNet8MediatR.Atm.Features.Atm.CardHolder.CreateCardHolder;
+﻿using DotNet8MediatR.Atm.Features.Atm.CardHolder;
 using DotNet8MediatR.Atm.Features.Atm.Login;
 using DotNet8MediatR.Atm.Features.Atm.Withdrawal;
 using DotNet8MediatR.Models.Atm;
@@ -30,11 +30,11 @@ namespace DotNet8MediatR.Atm.Features.Atm
                     responseData = await login.Login(raw.ToObject<LoginRequestModel>()!);
                     break;
                 case EnumAtmModuleType.CreateCardHolder:
-                    var createCardHolder = serviceProvider.GetRequiredService<CreateCardHolderBusinessLogic>();
+                    var createCardHolder = serviceProvider.GetRequiredService<CardHolderBusinessLogic>();
                     responseData = await createCardHolder.CreateCardHolder(raw.ToObject<CardHolderRequestModel>()!);
                     break;
                 case EnumAtmModuleType.GetCardHolder:
-                    var getCardHolder = serviceProvider.GetRequiredService<GetCardHolderBusinessLogic>();
+                    var getCardHolder = serviceProvider.GetRequiredService<CardHolderBusinessLogic>();
                     responseData = await getCardHolder.GetCardHolder(raw.ToObject<CardHolderRequestModel>()!);
                     break;
                 case EnumAtmModuleType.Deposit:

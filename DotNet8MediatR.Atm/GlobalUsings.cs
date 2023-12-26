@@ -7,8 +7,7 @@ global using Microsoft.IdentityModel.Tokens;
 
 global using DotNet8MediatR.Atm.Features.Atm;
 global using DotNet8MediatR.Atm.Features.Atm.Login;
-global using DotNet8MediatR.Atm.Features.Atm.CardHolder.CreateCardHolder;
-global using DotNet8MediatR.Atm.Features.Atm.CardHolder.GetCardHolder;
+global using DotNet8MediatR.Atm.Features.Atm.CardHolder;
 global using DotNet8MediatR.Atm.Features.Atm.Deposit;
 
 global using DotNet8MediatR.Db;
