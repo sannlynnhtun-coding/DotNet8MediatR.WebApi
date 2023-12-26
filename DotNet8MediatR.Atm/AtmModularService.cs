@@ -1,4 +1,5 @@
-﻿using DotNet8MediatR.Atm.Features.Atm;
+﻿
+using DotNet8MediatR.Atm.Features.Atm.Withdrawal;
 
 namespace DotNet8MediatR.Atm;
 
@@ -13,15 +14,23 @@ public static class AtmModularService
         return services;
     }
 
-    public static IServiceCollection AddAtmBusinessLogic(this IServiceCollection services)
+    public static IServiceCollection AddAtmDataAccess(this IServiceCollection services)
     {
         services.AddScoped<LoginDataAccess>();
+        services.AddScoped<CreateCardHolderDataAccess>();
+        services.AddScoped<GetCardHolderDataAccess>();
+        services.AddScoped<DepositDataAccess>();
+        services.AddScoped<WithdrawalDataAccess>();
         return services;
     }
 
-    public static IServiceCollection AddAtmDataAccess(this IServiceCollection services)
+    public static IServiceCollection AddAtmBusinessLogic(this IServiceCollection services)
     {
         services.AddScoped<LoginBusinessLogic>();
+        services.AddScoped<CreateCardHolderBusinessLogic>();
+        services.AddScoped<GetCardHolderBusinessLogic>();
+        services.AddScoped<DepositBusinessLogic>();
+        services.AddScoped<WithdrawalBusinessLogic>();
         return services;
     }
 

@@ -24,7 +24,8 @@ public enum EnumAtmModuleType
 {
     None,
     Login,
-    CardHolder,
+    CreateCardHolder,
+    GetCardHolder,
     Deposit,
     Withdrawal
 }
