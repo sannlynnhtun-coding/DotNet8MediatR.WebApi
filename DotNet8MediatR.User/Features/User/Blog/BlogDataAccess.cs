@@ -70,4 +70,84 @@ public class BlogDataAccess(AppDbContext appDbContext)
         model.Response = new ResponseModel(respCode, respDesp, respType);
         return model;
     }
+
+    public async Task<BlogResponseModel> EditBlog(BlogRequestModel requestModel)
+    {
+        var model = new BlogResponseModel();
+
+        if (requestModel.Id == 0)
+        {
+            model.Response.Set(Codes.Warning0003);
+        }
+
+        var blog = await appDbContext.Blogs.AsNoTracking()
+                    .Where(x => x.Blog_Id == requestModel.Id)
+                    .FirstOrDefaultAsync();
+
+        if (blog is null)
+        {
+            model.Response.Set(Codes.Warning0003);
+            goto Result;
+        }
+
+        model.Response.Set(Codes.Success0001);
+
+    Result:
+        return model;
+    }
+
+    public async Task<BlogResponseModel> UpdateBlog(BlogRequestModel requestModel)
+    {
+        var model = new BlogResponseModel();
+
+        var blog = await appDbContext.Blogs.AsNoTracking()
+                    .Where(x => x.Blog_Id == requestModel.Id)
+                    .FirstOrDefaultAsync();
+
+        blog!.Blog_Title = requestModel.Title!;
+        blog.Blog_Author = requestModel.Author!;
+        blog.Blog_Content = requestModel.Content!;
+
+        var result = await appDbContext.SaveChangesAsync();
+
+        var respCode = result > 0 ? "000" : "999";
+        var respDesp = result > 0 ? "Saving Successful." : "Saving Failed.";
+        var respType = result > 0 ? EnumRespType.Success : EnumRespType.Error;
+
+        model.Response = new ResponseModel(respCode, respDesp, respType);
+
+        return model;
+    }
+
+    public async Task<BlogResponseModel> DeleteBlog(BlogRequestModel requestModel)
+    {
+        var model = new BlogResponseModel();
+
+        if (requestModel.Id == 0)
+        {
+            model.Response.Set(Codes.Warning0003);
+        }
+
+        var blog = await appDbContext.Blogs.AsNoTracking()
+                    .Where(x => x.Blog_Id == requestModel.Id)
+                    .FirstOrDefaultAsync();
+
+        if (blog is null)
+        {
+            model.Response.Set(Codes.Warning0003);
+            goto Result;
+        }
+
+        appDbContext.Blogs.Remove(blog);
+        var result = await appDbContext.SaveChangesAsync();
+
+        var respCode = result > 0 ? "000" : "999";
+        var respDesp = result > 0 ? "Saving Successful." : "Saving Failed.";
+        var respType = result > 0 ? EnumRespType.Success : EnumRespType.Error;
+
+        model.Response = new ResponseModel(respCode, respDesp, respType);
+
+    Result:
+        return model;
+    }
 }

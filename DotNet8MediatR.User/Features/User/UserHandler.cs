@@ -18,13 +18,16 @@ public class UserHandler(BlogBusinessLogic blogBusinessLogic) : IRequestHandler<
                 responseData = await blogBusinessLogic.GetBlogs(raw.ToObject<BlogRequestModel>()!);
                 break;
             case EnumUserModuleType.BlogEdit:
+                responseData = await blogBusinessLogic.EditBlog(raw.ToObject<BlogRequestModel>()!);
                 break;
             case EnumUserModuleType.BlogCreate:
                 responseData = await blogBusinessLogic.CreateBlog(raw.ToObject<BlogRequestModel>()!);
                 break;
             case EnumUserModuleType.BlogUpdate:
+                responseData = await blogBusinessLogic.UpdateBlog(raw.ToObject<BlogRequestModel>()!);
                 break;
             case EnumUserModuleType.BlogDelete:
+                responseData = await blogBusinessLogic.DeleteBlog(raw.ToObject<BlogRequestModel>()!);
                 break;
             case EnumUserModuleType.None:
             default:

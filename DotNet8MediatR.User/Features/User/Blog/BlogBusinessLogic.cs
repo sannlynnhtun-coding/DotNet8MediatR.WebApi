@@ -26,4 +26,19 @@ public class BlogBusinessLogic(BlogDataAccess blogDataAccess)
     {
         return await blogDataAccess.CreateBlog(requestModel);
     }
+
+    public async Task<BlogResponseModel> EditBlog(BlogRequestModel requestModel)
+    {
+        return await blogDataAccess.EditBlog(requestModel);
+    }
+
+    public async Task<BlogResponseModel> UpdateBlog(BlogRequestModel requestModel)
+    {
+        return await blogDataAccess.UpdateBlog(requestModel);
+    }
+
+    public async Task<BlogResponseModel> DeleteBlog(BlogRequestModel requestModel)
+    {
+        return await blogDataAccess.DeleteBlog(requestModel);
+    }
 }
