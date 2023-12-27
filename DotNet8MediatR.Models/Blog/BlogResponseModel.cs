@@ -2,6 +2,6 @@
 
 public class BlogResponseModel
 {
-    public ResponseModel Response { get; set; }
+    public ResponseModel Response { get; set; } = new();
     public BlogViewModel Blog { get; set; }
 }

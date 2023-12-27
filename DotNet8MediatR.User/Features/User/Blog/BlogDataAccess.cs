@@ -64,6 +64,14 @@ public class BlogDataAccess(AppDbContext appDbContext)
         await appDbContext.Blogs.AddAsync(blog);
         var result = await appDbContext.SaveChangesAsync();
 
+        model.Blog = new BlogViewModel
+        {
+            Id = blog.Blog_Id,
+            Title = blog.Blog_Title,
+            Author = blog.Blog_Author,
+            Content = blog.Blog_Content
+        };
+
         var respCode = result > 0 ? "000" : "999";
         var respDesp = result > 0 ? "Saving Successful." : "Saving Failed.";
         var respType = result > 0 ? EnumRespType.Success : EnumRespType.Error;
@@ -90,6 +98,13 @@ public class BlogDataAccess(AppDbContext appDbContext)
             goto Result;
         }
 
+        model.Blog = new BlogViewModel
+        {
+            Id = blog.Blog_Id,
+            Title = blog.Blog_Title,
+            Author = blog.Blog_Author,
+            Content = blog.Blog_Content
+        };
         model.Response.Set(Codes.Success0001);
 
     Result:
@@ -108,10 +123,19 @@ public class BlogDataAccess(AppDbContext appDbContext)
         blog.Blog_Author = requestModel.Author!;
         blog.Blog_Content = requestModel.Content!;
 
+        appDbContext.Update(blog);
         var result = await appDbContext.SaveChangesAsync();
 
+        model.Blog = new BlogViewModel
+        {
+            Id = blog.Blog_Id,
+            Title = blog.Blog_Title,
+            Author = blog.Blog_Author,
+            Content = blog.Blog_Content
+        };
+
         var respCode = result > 0 ? "000" : "999";
-        var respDesp = result > 0 ? "Saving Successful." : "Saving Failed.";
+        var respDesp = result > 0 ? "Updating Successful." : "Updating Failed.";
         var respType = result > 0 ? EnumRespType.Success : EnumRespType.Error;
 
         model.Response = new ResponseModel(respCode, respDesp, respType);
@@ -142,7 +166,7 @@ public class BlogDataAccess(AppDbContext appDbContext)
         var result = await appDbContext.SaveChangesAsync();
 
         var respCode = result > 0 ? "000" : "999";
-        var respDesp = result > 0 ? "Saving Successful." : "Saving Failed.";
+        var respDesp = result > 0 ? "Deleting Successful." : "Deleting Failed.";
         var respType = result > 0 ? EnumRespType.Success : EnumRespType.Error;
 
         model.Response = new ResponseModel(respCode, respDesp, respType);
