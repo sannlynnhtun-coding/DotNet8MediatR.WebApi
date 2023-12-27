@@ -4,8 +4,8 @@ public class BlogBusinessLogic(BlogDataAccess blogDataAccess)
 {
     public async Task<BlogListResponseModel> GetBlogs(BlogRequestModel requestModel)
     {
-        var pageNo = requestModel.PageSettng!.PageNo;
-        var pageSize = requestModel.PageSettng!.PageSize;
+        var pageNo = requestModel.PageSetting!.PageNo;
+        var pageSize = requestModel.PageSetting!.PageSize;
         var model = new BlogListResponseModel();
         if (pageNo == 0)
         {
